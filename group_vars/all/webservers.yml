@@ -1,0 +1,10 @@
+count: 1 
+region: us-east-1
+zone: us-east-1d
+group: default
+image: ami-772aa961  
+subnet: subnet-3a2aa952
+key: mkp 
+instance_type: t2.micro
+security_group: webserver # Change the security group name here
+keypair: mkp # Change the keypair name

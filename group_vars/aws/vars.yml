@@ -1,0 +1,19 @@
+# AWS specific variables
+ec2_access_key: AKIAJWXZ7L5ZT3UCZQ2A
+ec2_secret_key: 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
+ec2_region: us-east-1
+ec2_zone:
+ec2_image: ami-772aa961
+ec2_instance_type: t2.micro
+ec2_keypair: mkp 
+ec2_security_group: default
+ec2_instance_count: 3
+ec2_tag: demo
+ec2_tag_name_prefix: dmalicia
+ec2_hosts: all
+wait_for_port: 22
+project_name: dmalicia
+ec2_webserver_security_group: sg_webserver
+ec2_database_security_group: sg_database 
+ec2_loadbalancer_security_group: sg_load_balancer 
+ec2_monitoring_security_group: sg_monitoring 

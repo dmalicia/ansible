@@ -1,0 +1,20 @@
+---
+# This role contains common plays that will run on all nodes.
+- name: install common apt packages
+  apt: pkg={{ item }} state=latest update_cache=yes
+  become: yes
+  with_items:
+    - build-essential
+    - curl
+    - git
+    - python-dev
+    - python-setuptools
+
+- name: install nrpe
+  apt: state=latest pkg={{item}} update_cache=yes
+  with_items:
+    - nagios-plugins
+    - nagios-nrpe-server
+  tags:
+    - packages
+  become: yes
