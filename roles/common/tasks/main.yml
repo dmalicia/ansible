@@ -1,14 +1,16 @@
 ---
 # This role contains common plays that will run on all nodes.
 - name: install common apt packages
-  apt: pkg={{ item }} state=latest update_cache=yes
-  become: yes
+  apt: pkg={{item}} state=present update_cache=yes
   with_items:
-    - build-essential
+#    - build-essential
     - curl
-    - git
-    - python-dev
-    - python-setuptools
+#    - git
+#    - python-dev
+#    - python-setuptools
+  tags:
+    - slowpack
+  become: yes
 
 - name: install nrpe
   apt: state=latest pkg={{item}} update_cache=yes

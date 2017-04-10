@@ -1,26 +1,45 @@
 ---
-# This role will install MySQL and create db user and give permissions.
-
-- name: Install Mysql package
-  yum: name={{ item }} state=present
+- name: Install MySQL
+  apt: name={{ item }} update_cache=yes cache_valid_time=3600 state=present
+  sudo: yes
   with_items:
-   - mysql-server
-   - MySQL-python
+  - python-mysqldb
+  - mysql-server
 
-- name: Configure SELinux to start mysql on any port
-  seboolean: name=mysql_connect_any state=true persistent=yes
-  when: sestatus.rc != 0
+- name: Start the MySQL service
+  sudo: yes
+  service: 
+   name: mysql 
+   state: started
+   enabled: true
 
-- name: Create Mysql configuration file
-  template: src=my.cnf.j2 dest=/etc/my.cnf
-  notify:
-  - restart mysql
+- name: update mysql root password for all root accounts
+  sudo: yes
+  mysql_user: 
+   name: root 
+   host: "{{ item }}" 
+   password: "{{ db_password }}"
+   login_user: "{{ db_user }}" 
+   login_password: "{{ db_root_password }}"
+   check_implicit_admin: yes
+   priv: "*.*:ALL,GRANT"
+   with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost 
 
-- name: Start Mysql Service
-  service: name=mysqld state=started enabled=yes
+#   - name: Create Mysql configuration file
+#  	template: src=my.cnf.j2 dest=/etc/my.cnf
+#  	notify:
+#   - restart mysql
 
-- name: Create Application Database
-  mysql_db: name={{ dbname }} state=present
+#- name: Start Mysql Service
 
-- name: Create Application DB User
-  mysql_user: name={{ dbuser }} password={{ upassword }} priv=*.*:ALL host='%' state=present
+#    service: name=mysqld state=started enabled=yes
+
+#- name: Create Application Database
+#    mysql_db: name={{ dbname }} state=present
+
+#- name: Create Application DB User
+#    mysql_user: name={{ dbuser }} password={{ upassword }} priv=*.*:ALL host='%' state=present
